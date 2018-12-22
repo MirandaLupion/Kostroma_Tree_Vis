@@ -1,0 +1,28 @@
+---
+title: "area_total_chart"
+author: "Miranda Lupion"
+date: "12/22/2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, error = FALSE, message = FALSE, warning = FALSE)
+
+library(tidyverse)
+library(readr)
+library(plotly)
+```
+
+```{r, total area}
+
+area_by_district <- area_by_district %>%
+  filter(district != "All")
+
+total_area_plot <- ggplotly(tooltip = "text", 
+         ggplot(area_by_district, aes(x = district, y = total_area_desyatin, text = total_area_desyatin)) +
+  geom_col(fill = brewer.pal(length(unique(df$color)), "Set3")) +
+  coord_flip() +
+  labs(y = "Total area (in desyatins)", x = NULL, title = "Total land area by district for Kostroma Guberniia") 
+  
+```
+
