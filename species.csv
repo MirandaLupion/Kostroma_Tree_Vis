@@ -1,0 +1,209 @@
+district,tree_species,quantity,type
+Kologrivsky District,spruce,282960,coniferous
+Vetluzhsky District ,spruce,234036,coniferous
+Varnavinsky District,spruce,198469,coniferous
+Makaryevsky District,spruce,105566,coniferous
+Total for northeast,spruce,821041,coniferous
+Soligalichsky District,spruce,95377,coniferous
+Chukhlomsky District,spruce,34729,coniferous
+Galichsky District,spruce,31256,coniferous
+Buysky District,spruce,19942,coniferous
+Total for southwest,spruce,181304,coniferous
+Kineshmasky District,spruce,28271,coniferous
+Kostromsky District,spruce,23206,coniferous
+Yurevetsky District,spruce,27918,coniferous
+Nerekhtsky District,spruce,3406,coniferous
+Total for southeast,spruce,82801,coniferous
+All,spruce,1085146,coniferous
+Kologrivsky District,pine,155672,coniferous
+Vetluzhsky District ,pine,118757,coniferous
+Varnavinsky District,pine,88965,coniferous
+Makaryevsky District,pine,206691,coniferous
+Total for northeast,pine,570084,coniferous
+Soligalichsky District,pine,6505,coniferous
+Chukhlomsky District,pine,3615,coniferous
+Galichsky District,pine,25258,coniferous
+Buysky District,pine,3440,coniferous
+Total for southwest,pine,38818,coniferous
+Kineshmasky District,pine,8665,coniferous
+Kostromsky District,pine,22628,coniferous
+Yurevetsky District,pine,11202,coniferous
+Nerekhtsky District,pine,620,coniferous
+Total for southeast,pine,43114,coniferous
+All,pine,652017,coniferous
+Kologrivsky District,spruce_and_pine,73122,coniferous
+Vetluzhsky District ,spruce_and_pine,52815,coniferous
+Varnavinsky District,spruce_and_pine,11159,coniferous
+Makaryevsky District,spruce_and_pine,22346,coniferous
+Total for northeast,spruce_and_pine,159442,coniferous
+Soligalichsky District,spruce_and_pine,26094,coniferous
+Chukhlomsky District,spruce_and_pine,71812,coniferous
+Galichsky District,spruce_and_pine,32342,coniferous
+Buysky District,spruce_and_pine,23186,coniferous
+Total for southwest,spruce_and_pine,153434,coniferous
+Kineshmasky District,spruce_and_pine,23723,coniferous
+Kostromsky District,spruce_and_pine,17996,coniferous
+Yurevetsky District,spruce_and_pine,4790,coniferous
+Nerekhtsky District,spruce_and_pine,3226,coniferous
+Total for southeast,spruce_and_pine,49735,coniferous
+All,spruce_and_pine,362612,coniferous
+Kologrivsky District,spruce_and_fir,119,coniferous
+Vetluzhsky District ,spruce_and_fir,155520,coniferous
+Varnavinsky District,spruce_and_fir,0,coniferous
+Makaryevsky District,spruce_and_fir,857,coniferous
+Total for northeast,spruce_and_fir,156496,coniferous
+Soligalichsky District,spruce_and_fir,0,coniferous
+Chukhlomsky District,spruce_and_fir,0,coniferous
+Galichsky District,spruce_and_fir,116,coniferous
+Buysky District,spruce_and_fir,96,coniferous
+Total for southwest,spruce_and_fir,212,coniferous
+Kineshmasky District,spruce_and_fir,0,coniferous
+Kostromsky District,spruce_and_fir,0,coniferous
+Yurevetsky District,spruce_and_fir,0,coniferous
+Nerekhtsky District,spruce_and_fir,0,coniferous
+Total for southeast,spruce_and_fir,0,coniferous
+All,spruce_and_fir,156708,coniferous
+Kologrivsky District,other_conifers,278,coniferous
+Vetluzhsky District ,other_conifers,586,coniferous
+Varnavinsky District,other_conifers,893,coniferous
+Makaryevsky District,other_conifers,28,coniferous
+Total for northeast,other_conifers,1785,coniferous
+Soligalichsky District,other_conifers,0,coniferous
+Chukhlomsky District,other_conifers,0,coniferous
+Galichsky District,other_conifers,34,coniferous
+Buysky District,other_conifers,0,coniferous
+Total for southwest,other_conifers,34,coniferous
+Kineshmasky District,other_conifers,48,coniferous
+Kostromsky District,other_conifers,12,coniferous
+Yurevetsky District,other_conifers,67,coniferous
+Nerekhtsky District,other_conifers,0,coniferous
+Total for southeast,other_conifers,127,coniferous
+All,other_conifers,1945,coniferous
+Kologrivsky District,total_conifer,512151,coniferous
+Vetluzhsky District ,total_conifer,561714,coniferous
+Varnavinsky District,total_conifer,299486,coniferous
+Makaryevsky District,total_conifer,335498,coniferous
+Total for northeast,total_conifer,1708849,coniferous
+Soligalichsky District,total_conifer,127976,coniferous
+Chukhlomsky District,total_conifer,110155,coniferous
+Galichsky District,total_conifer,89006,coniferous
+Buysky District,total_conifer,46665,coniferous
+Total for southwest,total_conifer,373802,coniferous
+Kineshmasky District,total_conifer,60706,coniferous
+Kostromsky District,total_conifer,63842,coniferous
+Yurevetsky District,total_conifer,43976,coniferous
+Nerekhtsky District,total_conifer,7252,coniferous
+Total for southeast,total_conifer,175777,coniferous
+All,total_conifer,2258428,coniferous
+Kologrivsky District,birch,39322,deciduous 
+Vetluzhsky District ,birch,95210,deciduous 
+Varnavinsky District,birch,108116,deciduous 
+Makaryevsky District,birch,125048,deciduous 
+Total for northeast,birch,367696,deciduous 
+Soligalichsky District,birch,13604,deciduous 
+Chukhlomsky District,birch,4434,deciduous 
+Galichsky District,birch,25570,deciduous 
+Buysky District,birch,1684,deciduous 
+Total for southwest,birch,45291,deciduous 
+Kineshmasky District,birch,4081,deciduous 
+Kostromsky District,birch,19881,deciduous 
+Yurevetsky District,birch,10642,deciduous 
+Nerekhtsky District,birch,2830,deciduous 
+Total for southeast,birch,37433,deciduous 
+All,birch,450420,deciduous 
+Kologrivsky District,aspen,5184,deciduous 
+Vetluzhsky District ,aspen,1870,deciduous 
+Varnavinsky District,aspen,4848,deciduous 
+Makaryevsky District,aspen,435,deciduous 
+Total for northeast,aspen,12338,deciduous 
+Soligalichsky District,aspen,1223,deciduous 
+Chukhlomsky District,aspen,5070,deciduous 
+Galichsky District,aspen,6563,deciduous 
+Buysky District,aspen,311,deciduous 
+Total for southwest,aspen,13168,deciduous 
+Kineshmasky District,aspen,4554,deciduous 
+Kostromsky District,aspen,27039,deciduous 
+Yurevetsky District,aspen,5995,deciduous 
+Nerekhtsky District,aspen,10182,deciduous 
+Total for southeast,aspen,47770,deciduous 
+All,aspen,73276,deciduous 
+Kologrivsky District,alder,1690,deciduous 
+Vetluzhsky District ,alder,400,deciduous 
+Varnavinsky District,alder,636,deciduous 
+Makaryevsky District,alder,90,deciduous 
+Total for northeast,alder,2817,deciduous 
+Soligalichsky District,alder,120,deciduous 
+Chukhlomsky District,alder,1086,deciduous 
+Galichsky District,alder,1220,deciduous 
+Buysky District,alder,288,deciduous 
+Total for southwest,alder,2713,deciduous 
+Kineshmasky District,alder,146,deciduous 
+Kostromsky District,alder,1310,deciduous 
+Yurevetsky District,alder,304,deciduous 
+Nerekhtsky District,alder,41,deciduous 
+Total for southeast,alder,1801,deciduous 
+All,alder,7330,deciduous 
+Kologrivsky District,birch_and_aspen,14699,deciduous 
+Vetluzhsky District ,birch_and_aspen,11469,deciduous 
+Varnavinsky District,birch_and_aspen,42344,deciduous 
+Makaryevsky District,birch_and_aspen,8269,deciduous 
+Total for northeast,birch_and_aspen,76780,deciduous 
+Soligalichsky District,birch_and_aspen,16825,deciduous 
+Chukhlomsky District,birch_and_aspen,20565,deciduous 
+Galichsky District,birch_and_aspen,10337,deciduous 
+Buysky District,birch_and_aspen,22701,deciduous 
+Total for southwest,birch_and_aspen,70428,deciduous 
+Kineshmasky District,birch_and_aspen,14361,deciduous 
+Kostromsky District,birch_and_aspen,15659,deciduous 
+Yurevetsky District,birch_and_aspen,5038,deciduous 
+Nerekhtsky District,birch_and_aspen,18414,deciduous 
+Total for southeast,birch_and_aspen,53472,deciduous 
+All,birch_and_aspen,200680,deciduous 
+Kologrivsky District,birch_and_alder,821,deciduous 
+Vetluzhsky District ,birch_and_alder,74,deciduous 
+Varnavinsky District,birch_and_alder,389,deciduous 
+Makaryevsky District,birch_and_alder,144,deciduous 
+Total for northeast,birch_and_alder,1428,deciduous 
+Soligalichsky District,birch_and_alder,2560,deciduous 
+Chukhlomsky District,birch_and_alder,180,deciduous 
+Galichsky District,birch_and_alder,587,deciduous 
+Buysky District,birch_and_alder,1912,deciduous 
+Total for southwest,birch_and_alder,5239,deciduous 
+Kineshmasky District,birch_and_alder,252,deciduous 
+Kostromsky District,birch_and_alder,2054,deciduous 
+Yurevetsky District,birch_and_alder,33,deciduous 
+Nerekhtsky District,birch_and_alder,2,deciduous 
+Total for southeast,birch_and_alder,2342,deciduous 
+All,birch_and_alder,9009,deciduous 
+Kologrivsky District,other_deciduous,280,deciduous 
+Vetluzhsky District ,other_deciduous,356,deciduous 
+Varnavinsky District,other_deciduous,1194,deciduous 
+Makaryevsky District,other_deciduous,697,deciduous 
+Total for northeast,other_deciduous,2526,deciduous 
+Soligalichsky District,other_deciduous,691,deciduous 
+Chukhlomsky District,other_deciduous,919,deciduous 
+Galichsky District,other_deciduous,131,deciduous 
+Buysky District,other_deciduous,232,deciduous 
+Total for southwest,other_deciduous,1973,deciduous 
+Kineshmasky District,other_deciduous,34,deciduous 
+Kostromsky District,other_deciduous,144,deciduous 
+Yurevetsky District,other_deciduous,76,deciduous 
+Nerekhtsky District,other_deciduous,47,deciduous 
+Total for southeast,other_deciduous,1603,deciduous 
+All,other_deciduous,6102,deciduous 
+Kologrivsky District,total_deciduous,61997,deciduous 
+Vetluzhsky District ,total_deciduous,109378,deciduous 
+Varnavinsky District,total_deciduous,157528,deciduous 
+Makaryevsky District,total_deciduous,134683,deciduous 
+Total for northeast,total_deciduous,463585,deciduous 
+Soligalichsky District,total_deciduous,35024,deciduous 
+Chukhlomsky District,total_deciduous,32254,deciduous 
+Galichsky District,total_deciduous,44408,deciduous 
+Buysky District,total_deciduous,27127,deciduous 
+Total for southwest,total_deciduous,138812,deciduous 
+Kineshmasky District,total_deciduous,23428,deciduous 
+Kostromsky District,total_deciduous,67389,deciduous 
+Yurevetsky District,total_deciduous,22087,deciduous 
+Nerekhtsky District,total_deciduous,31516,deciduous 
+Total for southeast,total_deciduous,144420,deciduous 
+All,total_deciduous,746818,deciduous 
