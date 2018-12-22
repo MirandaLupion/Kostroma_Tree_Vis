@@ -15,14 +15,21 @@ library(plotly)
 
 ```{r, total area}
 
+area_by_district <- read_csv("area_by_district_1908.csv")
+
+
 area_by_district <- area_by_district %>%
   filter(district != "All")
 
-total_area_plot <- ggplotly(tooltip = "text", 
-         ggplot(area_by_district, aes(x = district, y = total_area_desyatin, text = total_area_desyatin)) +
-  geom_col(fill = brewer.pal(length(unique(df$color)), "Set3")) +
+ggplotly(tooltip = "text", 
+         ggplot(area_by_district, aes(x = district, y = total_area_desyatin, fill = district, text = total_area_desyatin)) +
+  geom_col() +
   coord_flip() +
-  labs(y = "Total area (in desyatins)", x = NULL, title = "Total land area by district for Kostroma Guberniia") 
+    theme(legend.position="none") +
+  labs(y = "Total area (in desyatins)", 
+       x = NULL, 
+       title = "Total land area by district for Kostroma Guberniia")) %>% 
+  config(displayModeBar = FALSE)
   
 ```
 
