@@ -4,6 +4,9 @@ library(shiny)
 library(readr)
 library(stringr)
 library(shinythemes)
+# library(DT)
+# library(ggrepel)
+library(plotly)
 library(tidyverse)
 
 # Load data from CSV files
@@ -11,12 +14,6 @@ library(tidyverse)
 area_by_district <- read_csv("area_by_district_1908.csv") %>%
   filter(district != "All") %>%
   gather(key = "condition", value, -district)
-
-# area_options = c("Total area" = "total_area_desyatin",
-#                  "Suitable area" = "suitable_area_desyatin",
-#                  "Forested area" = "forested_area_desyatin",
-#                  "Percent forested area (of total land)" = "percent_forested_total",
-#                  "Percent forested area (of suitable land)" = "percent_forested_suitable")
 
 
 ui <- fluidPage(fluidPage(theme = shinytheme("united")),
@@ -43,7 +40,10 @@ ui <- fluidPage(fluidPage(theme = shinytheme("united")),
    
    # Show a plot of the generated distribution
    mainPanel(
-     plotOutput("plot")
+     plotlyOutput("plot")
+     # br(),
+     # br(),
+     # DT::dataTableOutput("table")
    )
  )
 )
@@ -56,13 +56,16 @@ server <- function(input, output) {
     if (input$radio == 1) {
       area_by_district %>%
       filter(district %in% input$d & condition %in% c("percent_forested_suitable", "percent_forested_total")) %>%
-      mutate(condition = case_when(condition == "percent_forested_suitable" ~ "Percent forested area (of suitable land)",
-                                   condition == "percent_forested_total" ~ "Percent forested area (of total land)"))
+      mutate(condition = case_when(condition == "percent_forested_suitable" ~ "Percent forested area of suitable land",
+                                   condition == "percent_forested_total" ~ "Percent forested area of total land"))
     } else {
-      filter(area_by_district, district %in% input$d & condition %in% c("total_area_desyatin", "suitable_area_desyatin", "forested_area_desyatin"))
+      area_by_district %>%
+      filter(district %in% input$d & condition %in% c("total_area_desyatin", "suitable_area_desyatin", "forested_area_desyatin")) %>%
+      mutate(condition = case_when(condition == "total_area_desyatin" ~ "Total area", 
+                                   condition == "suitable_area_desyatin" ~ "Suitable area",
+                                   condition == "forested_area_desyatin" ~ "Forested area"))
     }
     })
-  
   
   y_value <- reactive({
     if (input$radio == 1) {
@@ -71,16 +74,56 @@ server <- function(input, output) {
       y_value = "Area in desyatins (approximately 2.7 acres)"
     }
   })
-  
-  output$plot <- renderPlot({
-    ggplot(data = pop_subset(), aes_string(x = "district", y = "value", fill = "condition")) + 
+   
+  output$plot <- renderPlotly({
+    ggplotly(tooltip = "y", ggplot(data = pop_subset(), aes_string(x = "district", y = "value", fill = "condition")) + 
       geom_bar(position="dodge", stat="identity") + #color by region
-      labs(x = "District", 
+      labs(x = NULL, 
            title = "Forested area in Kostroma province, 1908",
            y = y_value()) +
       coord_flip() +
-      theme(legend.title = element_blank())
-  })}
+      theme(legend.title = element_blank())) %>% 
+      config(displayModeBar = FALSE)  %>%
+      layout(legend = list(x = 100, y = 0.5))
+    # +
+    #   geom_text_repel(mapping = aes(label = value, fontface = "bold"),
+    #                   hjust = 1,
+                      # segment.size = 0.2)
+    
+   
+                
+  })
+  
+  # output$table <- DT::renderDataTable({
+  #   if (input$radio == 1) {
+  #     table_data <- area_by_district %>%
+  #       filter(district %in% input$d & condition %in% c("percent_forested_suitable", "percent_forested_total")) %>%
+  #       mutate(condition = case_when(condition == "percent_forested_suitable" ~ "Percent forested (suitable land)",
+  #                                    condition == "percent_forested_total" ~ "Percent forested (total land)")) %>%
+  #       spread(condition, value)
+  #       
+  #   } else {
+  #     table_data <- area_by_district %>%
+  #       filter(district %in% input$d & condition %in% c("total_area_desyatin", "suitable_area_desyatin", "forested_area_desyatin")) %>%
+  #       mutate(condition = case_when(condition == "total_area_desyatin" ~ "Total area", 
+  #                                    condition == "suitable_area_desyatin" ~ "Suitable area",
+  #                                    condition == "forested_area_desyatin" ~ "Forested area")) %>%
+  #       spread(condition, value)
+  #     
+  #   }
+  #   
+  #   
+  #   DT::datatable(table_data, 
+  #                  rownames = FALSE
+  #                  #colnames = c()
+  #                 
+  #                 )
+  #   
+  #       
+  #   
+  # })
+  
+  }
 
 # Run the application 
 shinyApp(ui = ui, server = server)
