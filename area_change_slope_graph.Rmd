@@ -14,7 +14,9 @@ theme_set((theme_classic()))
 area_change <- read_csv("area_change_1818_1908.csv")
 
 ```
-```{r}
+
+
+```{r, labels and data frame}
 years <- 90
 
 # Select the data for year 1 (1818)
@@ -37,14 +39,24 @@ groups <- area_change %>%
   filter(year == 1818) %>%
   select(district)
 
+# Put the selected data together into a single data frame
+
 slope_data <- data.frame(year_1, year_2, groups) %>%
   rename(year_1 = percent_forested, year_2 = percent_forested.1, groups = district)
 
-l11 <- paste(slope_data$groups, ",", slope_data$year_1, "%")
+# Create the labels for the graphic
 
+l11 <- paste0(slope_data$groups, ", ", slope_data$year_1, "%")
 
-
-l13<-paste(slope_data$groups,slope_data$year_2)
+l13<-paste0(slope_data$groups,", ", slope_data$year_2, "%")
 
 ```
+
+
+```{r graphic}
+
+ggplot(slope_data) + geom_segment(aes(x=0, xend = years, y = year_1, yend = year_2), size=.75)
+
+```
+
 
