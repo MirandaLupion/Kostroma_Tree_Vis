@@ -55,7 +55,23 @@ l13<-paste0(slope_data$groups,", ", slope_data$year_2, "%")
 
 ```{r graphic}
 
-ggplot(slope_data) + geom_segment(aes(x=0, xend = years, y = year_1, yend = year_2), size=.75)
+ggplot(slope_data) + geom_segment(aes(x=0, xend = years, y = year_1, yend = year_2), size=.75) +
+  theme(panel.background = element_blank()) +
+  theme(panel.grid=element_blank()) +
+  theme(axis.ticks=element_blank()) +
+  theme(axis.text=element_blank()) +
+  theme(panel.border=element_blank()) + 
+  xlab("") + 
+  ylab("Percent forested") + 
+  xlim((0-20),(years+20)) +
+  ylim(0,((max(slope_data$year_2,slope_data$year_1)))) +
+  geom_text(label = l13,
+            y = slope_data$year_2,
+            x = years, hjust=-0.2,size=2) +
+  geom_text(label = l11,
+            y = slope_data$year_1,
+            x = -25, hjust=-0.2,size=2)      
+
 
 ```
 
