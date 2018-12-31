@@ -1,0 +1,50 @@
+---
+title: "area_change_slope_graph"
+author: "Miranda Lupion"
+date: "12/31/2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, error = FALSE, message = FALSE, warning = FALSE)
+library(readr)
+library(tidyverse)
+library(scales)
+theme_set((theme_classic()))
+area_change <- read_csv("area_change_1818_1908.csv")
+
+```
+```{r}
+years <- 90
+
+# Select the data for year 1 (1818)
+
+year_1 <- area_change %>%
+  filter(year == 1818) %>%
+  select(percent_forested)
+
+# Select the data for year 2 (1908)
+
+year_2 <- area_change %>%
+  filter(year == 1908) %>%
+  select(percent_forested)
+
+
+# Only select one set of districts 
+# This is made possible because R is preserving the order of all these observations 
+
+groups <- area_change %>%
+  filter(year == 1818) %>%
+  select(district)
+
+slope_data <- data.frame(year_1, year_2, groups) %>%
+  rename(year_1 = percent_forested, year_2 = percent_forested.1, groups = district)
+
+l11 <- paste(slope_data$groups, ",", slope_data$year_1, "%")
+
+
+
+l13<-paste(slope_data$groups,slope_data$year_2)
+
+```
+
