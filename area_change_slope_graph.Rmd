@@ -3,6 +3,8 @@ title: "area_change_slope_graph"
 author: "Miranda Lupion"
 date: "12/31/2018"
 output: html_document
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r setup, include=FALSE}
@@ -111,7 +113,7 @@ ggplot(slope_data) +
   
   # Add a y-axis label
   
-  ylab("Percent forested") + 
+  ylab("Percent forested land") + 
   
   labs(title = "Change in forestation, Kostroma Province") +
   
