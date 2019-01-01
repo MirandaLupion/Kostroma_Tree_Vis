@@ -58,30 +58,83 @@ l13<-paste0(slope_data$groups,", ", slope_data$year_2, "%")
 
 ```{r graphic}
 
+# Slope data
+
 ggplot(slope_data) + 
-  geom_segment(aes(x=0, xend = years, y = year_1, yend = year_2, color = groups), size=.75) +
+  
+  # Segment codes
+  
+  geom_segment(aes(x=-5, xend = years, y = year_1, yend = year_2, color = groups), size=.75) +
+  
+  # Horizontal line for 1818
+  
+  geom_vline(xintercept=-5, linetype="dashed", size=.1) + 
+  
+  # Horizontal line for 1908
+  
+  geom_vline(xintercept=90, linetype="dashed", size=.1) +
+  
+  # Remove the panel background
+  
   theme(panel.background = element_blank()) +
+  
+  # Remove the grid
+  
   theme(panel.grid=element_blank()) +
+  
+  # Remove the axis tickts
+  
   theme(axis.ticks=element_blank()) +
+  
+  # Remove the axis text
+  
   theme(axis.text=element_blank()) +
   theme(panel.border=element_blank()) + 
+  
+  # Remove the legend
+  
   theme(legend.position="none") +
+  
+  # Remove the x-axis label
+  
   xlab("") + 
+  
+  # Add a y-axis label
+  
   ylab("Percent forested") + 
-  xlim((0-20),(years+20)) +
+  
+  labs(title = "Change in forestation, Kostroma Province") +
+  
+  # Set the size of the graphic
+  
+  xlim((-20),(years+20)) +
   ylim(25,(100)) +
+  
+  # Add labels for year 2
+  
   geom_text_repel(label = l13,
             y = slope_data$year_2,
-            x = years, hjust=-0.2,size=2) +
+            x = years, hjust=-0.2,size=2,
+            segment.alpha	= 0) +
+  
+  # Add labels for year 1
+  
   geom_text_repel(label = l11,
             y = slope_data$year_1,
-            x = -25, hjust=-0.2,size=2) +
+            x = -25, hjust=-0.2,size=2,
+            segment.alpha	= 0) +
+  
+  # Add 1818 label
+  
   geom_text(label="1818", 
-            x=0, 
+            x=-5, 
             y=98,
             hjust= 1.2,size=5) +
+  
+  # Add 1908 label
+  
   geom_text(label="1908", 
-            x=100, 
+            x=102, 
             y=98,
             hjust= 1.2,size=5) 
 
