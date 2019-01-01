@@ -1,0 +1,14 @@
+---
+title: "species_graphic"
+author: "Miranda Lupion"
+date: "1/1/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, error = FALSE, message = FALSE, warning = FALSE)
+library(readr)
+library(tidyverse)
+
+```
+
