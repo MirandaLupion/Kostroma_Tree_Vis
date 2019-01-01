@@ -8,7 +8,9 @@ output: html_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE, error = FALSE, message = FALSE, warning = FALSE)
 library(readr)
+library(ggrepel)
 library(tidyverse)
+library(stringr)
 library(scales)
 theme_set((theme_classic()))
 area_change <- read_csv("area_change_1818_1908.csv")
@@ -42,7 +44,8 @@ groups <- area_change %>%
 # Put the selected data together into a single data frame
 
 slope_data <- data.frame(year_1, year_2, groups) %>%
-  rename(year_1 = percent_forested, year_2 = percent_forested.1, groups = district)
+  rename(year_1 = percent_forested, year_2 = percent_forested.1, groups = district) %>%
+  mutate(groups = str_remove(groups, " District"))
 
 # Create the labels for the graphic
 
@@ -55,22 +58,32 @@ l13<-paste0(slope_data$groups,", ", slope_data$year_2, "%")
 
 ```{r graphic}
 
-ggplot(slope_data) + geom_segment(aes(x=0, xend = years, y = year_1, yend = year_2), size=.75) +
+ggplot(slope_data) + 
+  geom_segment(aes(x=0, xend = years, y = year_1, yend = year_2, color = groups), size=.75) +
   theme(panel.background = element_blank()) +
   theme(panel.grid=element_blank()) +
   theme(axis.ticks=element_blank()) +
   theme(axis.text=element_blank()) +
   theme(panel.border=element_blank()) + 
+  theme(legend.position="none") +
   xlab("") + 
   ylab("Percent forested") + 
   xlim((0-20),(years+20)) +
-  ylim(0,((max(slope_data$year_2,slope_data$year_1)))) +
-  geom_text(label = l13,
+  ylim(25,(100)) +
+  geom_text_repel(label = l13,
             y = slope_data$year_2,
             x = years, hjust=-0.2,size=2) +
-  geom_text(label = l11,
+  geom_text_repel(label = l11,
             y = slope_data$year_1,
-            x = -25, hjust=-0.2,size=2)      
+            x = -25, hjust=-0.2,size=2) +
+  geom_text(label="1818", 
+            x=0, 
+            y=98,
+            hjust= 1.2,size=5) +
+  geom_text(label="1908", 
+            x=100, 
+            y=98,
+            hjust= 1.2,size=5) 
 
 
 ```
