@@ -120,19 +120,33 @@ ggplot(slope_data) +
   xlim((-25),(years+25)) +
   ylim(25,(100)) +
   
-  # Add labels for year 2
+  # Add labels for districts in year 2
   
   geom_text_repel(label = l13,
             y = slope_data$year_2,
-            x = years, hjust=-0.2,size=2,
-            segment.alpha	= 0) +
+            x = years, 
+            hjust=-0.2,
+            size=2,
+            segment.color = "grey50",
+            direction = "y") +
   
-  # Add labels for year 1
+  # Add labels for districts in year 1
   
   geom_text_repel(label = l11,
             y = slope_data$year_1,
-            x = -27, hjust=-0.2,size=2,
-            segment.alpha	= 0) +
+            x = -5, 
+            hjust = 1.2,
+            size=2,
+            segment.color = "grey50",
+            direction = "y") +
+  
+  # Add points for 1818
+  
+  geom_point(aes(x = -5, y = year_1, col = coloring)) +
+  
+  # Add points for 1908
+  
+  geom_point(aes(x = 90, y = year_2, col = coloring)) +
   
   # Add 1818 label
   
