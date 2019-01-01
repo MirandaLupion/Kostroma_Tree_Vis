@@ -46,15 +46,22 @@ groups <- area_change %>%
 slope_data <- data.frame(year_1, year_2, groups) %>%
   rename(year_1 = percent_forested, year_2 = percent_forested.1, groups = district) %>%
   filter(groups != "All") %>%
-  mutate(groups = str_remove(groups, " District")) %>%
-  mutate(coloring = case_when(year_2 - year_1 >= 0 ~ "green",
-                              year_2 - year_1 < 0 ~ "red"))
+  mutate(groups = str_remove(groups, " District"), pct_diff = year_2 - year_1) %>%
+  
+  # Coloring based on quantile breakdowns
+  # quantile(slope_data$pct_diff)
+
+  mutate(coloring = case_when(pct_diff > 0 ~ "green",
+                              pct_diff >= -4.7 ~ "light red",
+                              pct_diff >= -10.255 ~ "red",
+                              pct_diff >= -23.5  ~ "dark red" ))
 
 # Create the labels for the graphic
 
 l11 <- paste0(slope_data$groups, ", ", slope_data$year_1, "%")
 
 l13 <-paste0(slope_data$groups,", ", slope_data$year_2, "%")
+
 
 ```
 
@@ -141,9 +148,12 @@ ggplot(slope_data) +
             y=98,
             hjust= 1.2,size=5) +
 
-# +
-#   
-   scale_color_manual(values = c("green"="#00ba38", "red"="#f8766d")) 
+  # Coloring
+  
+   scale_color_manual(values = c("green"="#00ba38", 
+                                 "red"="#ff250d", 
+                                 "dark red" = "#c91400", 
+                                 "light red" = "#ff8989")) 
 
 
 
