@@ -10,5 +10,29 @@ knitr::opts_chunk$set(echo = FALSE, error = FALSE, message = FALSE, warning = FA
 library(readr)
 library(tidyverse)
 
+species_data <- read_csv("species.csv")
+
+```
+
+
+```{r}
+uni_dis <- unique(species_data$district)
+
+n = 0
+
+for (i in 1:16) {
+  paste0("df", n) <- data.frame()
+  <- subset(species_data, district == uni_dis[i], drop = FALSE)
+  n <- n + 1
+}
+
+
+
+ subset(species_data, district == "Buysky District", drop = FALSE)
+ 
+ 
+   df <- data.frame()
+   paste0("df",)
+
 ```
 
