@@ -10,6 +10,7 @@ knitr::opts_chunk$set(echo = FALSE, error = FALSE, message = FALSE, warning = FA
 library(readr)
 library(tidyverse)
 library(RColorBrewer)
+library(ggrepel)
 species_data <- read_csv("species.csv")
 
 ```
@@ -17,17 +18,19 @@ species_data <- read_csv("species.csv")
 
 ```{r production of data sets}
 
+# Data prep for buysky district
+
 buysky <- subset(species_data, district == "Buysky District", drop = FALSE) %>%
   filter(tree_species != "total_conifer") %>%
   filter(tree_species != "total_deciduous") %>%
   select(-type, -district) %>%
-  mutate(total_trees = sum(quantity), percent_species = round((quantity*100/total_trees)))%>%
+  mutate(total_trees = sum(quantity), percent_species =     round((quantity*100/total_trees)))%>%
   select(tree_species, percent_species) %>%
   spread(tree_species, percent_species) 
 
-buysky$aspen <- 1
-  
+# To get us to 100 round up from .4
 
+buysky$aspen <- 1
 
 kologrivsky <- subset(species_data, district == "Kologrivsky District", drop = FALSE) 
 vetluzhsky <- subset(species_data, district == "Vetluzhsky District", drop = FALSE) 
@@ -58,20 +61,50 @@ ggplot(df_buysky, aes( x = x, y = y , fill = category)) +
   scale_y_continuous(expand = c(0, 0), trans = 'reverse') +
   theme(axis.text = element_blank(),
         axis.ticks = element_blank()) +
-  labs(x = NULL, y = NULL, 
-             title = "Percent of trees by species in Buysky District",
-             subtitle = "Kostroma Province") +
+  labs(x = NULL, 
+       y = NULL, 
+       title = "Tree species in Buysky District",
+       subtitle = "Kostroma Province",
+       caption = "Where each box is a percent and figures are rounded to the nearest percent") +
   guides(fill = guide_legend(title = "Species")) +
   scale_fill_manual(labels = c("Aspen", "Birch", "Birch and Alder", "Birch and Aspen", "Pine", "Spruce", "Spruce and Pine"), values = cols) 
 
+```
 
+```{r pie chart}
+pie_buysky <- buysky %>%
+  gather(key, value) %>%
+  filter(value > 0)
 
-  # scale_fill_brewer(palette = "Greens") 
-
-
-
-
-  # scale_fill_manual(title = "Species", labels = c("Aspen", "Birch", "Birch and Alder", "Birch and Aspen", "Pine", "Spruce", "Spruce and Pine")) 
+ggplot(pie_buysky, aes(x = "", y=value, fill = factor(key))) + 
+  
+  geom_bar(width = 1, stat = "identity") +
+  
+  theme(axis.line = element_blank(), 
+        plot.title = element_text(hjust=0),
+        axis.ticks = element_blank(),
+        axis.text = element_blank(),
+        panel.background = element_blank(),
+        panel.grid = element_blank()) + 
+  
+  labs(fill="key", 
+       x=NULL, 
+       y=NULL, 
+       title="Tree species in Buysky District", 
+       subtitle = "Kostroma Province",
+       caption="As a percent of total forested land") +
+   
+  coord_polar(theta = "y", start=0) +
+  
+  # geom_text_repel(aes(label = paste0(round(value), "%")
+  #                     ), 
+  #               hjust = 0) +
+  
+  guides(fill = guide_legend(title = "Species")) +
+  
+  scale_fill_manual(
+    labels = c("Aspen", "Birch", "Birch and Alder", "Birch and Aspen", "Pine", "Spruce", "Spruce and Pine"), 
+    values = cols) 
 
 ```
 
