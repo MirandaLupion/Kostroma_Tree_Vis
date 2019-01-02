@@ -15,24 +15,36 @@ species_data <- read_csv("species.csv")
 ```
 
 
-```{r}
-uni_dis <- unique(species_data$district)
+```{r production of data sets}
 
-n = 0
-
-for (i in 1:16) {
-  paste0("df", n) <- data.frame()
-  <- subset(species_data, district == uni_dis[i], drop = FALSE)
-  n <- n + 1
-}
-
+buysky <- subset(species_data, district == "Buysky District", drop = FALSE) %>%
+  filter(tree_species != "total_conifer") %>%
+  filter(tree_species != "total_deciduous") %>%
+  select(-type, -district) %>%
+  mutate(total_trees = sum(quantity), percent_species = (quantity*100/total_trees)) %>%
+  select(tree_species, percent_species) %>%
+  spread(tree_species, percent_species)
 
 
- subset(species_data, district == "Buysky District", drop = FALSE)
- 
- 
-   df <- data.frame()
-   paste0("df",)
+kologrivsky <- subset(species_data, district == "Kologrivsky District", drop = FALSE) 
+vetluzhsky <- subset(species_data, district == "Vetluzhsky District", drop = FALSE) 
+varnavinsky <- subset(species_data, district == "Varnavinsky District", drop = FALSE) 
+makaryevsky <- subset(species_data, district == "Makaryevsky District", drop = FALSE) 
+soligalichsky <- subset(species_data, district == "Soligalichsky District", drop = FALSE) 
+chukhlomsky <- subset(species_data, district == "Chukhlomsky District", drop = FALSE) 
+galichsky <- subset(species_data, district == "Galichsky District", drop = FALSE) 
+kineshmasky <- subset(species_data, district == "Kineshmasky District", drop = FALSE) 
+kostromsky <- subset(species_data, district == "Kostromsky District", drop = FALSE) 
+yurevetsky <- subset(species_data, district == "Yurevetsky District", drop = FALSE) 
+nerekhtsky <- subset(species_data, district == "Nerekhtsky District", drop = FALSE) 
+
+
+
+```
+
+```{r build waffle chart}
+
+
 
 ```
 
