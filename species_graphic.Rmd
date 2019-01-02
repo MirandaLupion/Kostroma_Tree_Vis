@@ -9,7 +9,7 @@ output: html_document
 knitr::opts_chunk$set(echo = FALSE, error = FALSE, message = FALSE, warning = FALSE)
 library(readr)
 library(tidyverse)
-
+library(RColorBrewer)
 species_data <- read_csv("species.csv")
 
 ```
@@ -21,9 +21,12 @@ buysky <- subset(species_data, district == "Buysky District", drop = FALSE) %>%
   filter(tree_species != "total_conifer") %>%
   filter(tree_species != "total_deciduous") %>%
   select(-type, -district) %>%
-  mutate(total_trees = sum(quantity), percent_species = (quantity*100/total_trees)) %>%
+  mutate(total_trees = sum(quantity), percent_species = round((quantity*100/total_trees)))%>%
   select(tree_species, percent_species) %>%
-  spread(tree_species, percent_species)
+  spread(tree_species, percent_species) 
+
+buysky$aspen <- 1
+  
 
 
 kologrivsky <- subset(species_data, district == "Kologrivsky District", drop = FALSE) 
@@ -43,8 +46,32 @@ nerekhtsky <- subset(species_data, district == "Nerekhtsky District", drop = FAL
 ```
 
 ```{r build waffle chart}
+nrows <- 10
+df_buysky <- expand.grid(y = 1:nrows, x = 1:nrows)
+df_buysky$category <- factor(rep(names(buysky), buysky))
+
+cols <- c("seagreen1", "seagreen3", "seagreen4", "slateblue4", "skyblue3", "slategray3", "navy")
+
+ggplot(df_buysky, aes( x = x, y = y , fill = category)) +
+  geom_tile(color = "snow1", size = 0.5) +
+  scale_x_continuous(expand = c(0, 0)) +
+  scale_y_continuous(expand = c(0, 0), trans = 'reverse') +
+  theme(axis.text = element_blank(),
+        axis.ticks = element_blank()) +
+  labs(x = NULL, y = NULL, 
+             title = "Percent of trees by species in Buysky District",
+             subtitle = "Kostroma Province") +
+  guides(fill = guide_legend(title = "Species")) +
+  scale_fill_manual(labels = c("Aspen", "Birch", "Birch and Alder", "Birch and Aspen", "Pine", "Spruce", "Spruce and Pine"), values = cols) 
 
 
+
+  # scale_fill_brewer(palette = "Greens") 
+
+
+
+
+  # scale_fill_manual(title = "Species", labels = c("Aspen", "Birch", "Birch and Alder", "Birch and Aspen", "Pine", "Spruce", "Spruce and Pine")) 
 
 ```
 
