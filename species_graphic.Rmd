@@ -11,6 +11,7 @@ library(readr)
 library(tidyverse)
 library(RColorBrewer)
 library(ggrepel)
+library(scales)
 species_data <- read_csv("species.csv")
 
 ```
@@ -56,7 +57,7 @@ df_buysky$category <- factor(rep(names(buysky), buysky))
 cols <- c("seagreen1", "seagreen3", "seagreen4", "slateblue4", "skyblue3", "slategray3", "navy")
 
 ggplot(df_buysky, aes( x = x, y = y , fill = category)) +
-  geom_tile(color = "snow1", size = 0.5) +
+  geom_tile(color = "snow3", size = 0.5) +
   scale_x_continuous(expand = c(0, 0)) +
   scale_y_continuous(expand = c(0, 0), trans = 'reverse') +
   theme(axis.text = element_blank(),
@@ -74,18 +75,33 @@ ggplot(df_buysky, aes( x = x, y = y , fill = category)) +
 ```{r pie chart}
 pie_buysky <- buysky %>%
   gather(key, value) %>%
-  filter(value > 0)
+  filter(value > 0) %>%  
+  
+  # Assigning label positions
+  
+mutate(y_pos = (case_when(key == "aspen" ~ 100,
+                        key == "birch" ~  98,
+                        key == "birch_and_alder" ~ 95,
+                      key == "birch_and_aspen" ~ 75,
+                      key == "pine" ~ 65))) %>%
+mutate(x_pos = (case_when(key == "aspen" ~ 1.5,
+                          key == "birch" ~ 1.5,
+                         key == "birch_and_alder" ~ 1.48,
+                         key == "birch_and_aspen" ~ 1.48,
+                         key == "pine" ~ 1.48)))  
 
-ggplot(pie_buysky, aes(x = "", y=value, fill = factor(key))) + 
+
+pie_chart <- ggplot(pie_buysky, aes(x = 1, y=value, fill = key)) + 
   
   geom_bar(width = 1, stat = "identity") +
   
   theme(axis.line = element_blank(), 
         plot.title = element_text(hjust=0),
         axis.ticks = element_blank(),
-        axis.text = element_blank(),
+        # axis.text = element_blank(),
         panel.background = element_blank(),
-        panel.grid = element_blank()) + 
+        # panel.grid = element_blank()
+        ) + 
   
   labs(fill="key", 
        x=NULL, 
@@ -93,18 +109,30 @@ ggplot(pie_buysky, aes(x = "", y=value, fill = factor(key))) +
        title="Tree species in Buysky District", 
        subtitle = "Kostroma Province",
        caption="As a percent of total forested land") +
+  
    
   coord_polar(theta = "y", start=0) +
   
-  # geom_text_repel(aes(label = paste0(round(value), "%")
-  #                     ), 
-  #               hjust = 0) +
-  
   guides(fill = guide_legend(title = "Species")) +
   
-  scale_fill_manual(
-    labels = c("Aspen", "Birch", "Birch and Alder", "Birch and Aspen", "Pine", "Spruce", "Spruce and Pine"), 
-    values = cols) 
+  scale_fill_manual(labels = c("Aspen", "Birch", "Birch and Alder", "Birch and Aspen", "Pine", "Spruce", "Spruce and Pine"), values = cols) 
+
+pie_chart
+
+pie_chart <- pie_chart + geom_text(label = pie_buysky$value, x = pie_buysky$x_pos, y = pie_buysky$y_pos) 
+ 
+
+pie_chart
+#  geom_text(label = "31%", y = 84.5, x = 1.2) +
+#   
+#   geom_text(aes(x = 1.5, y = pos, label = paste0(round(value), "%")),
+#                   # hjust = 1.2,
+#                   segment.color = "grey50",
+#                   direction = "y")
+
+  
+
+
 
 ```
 
