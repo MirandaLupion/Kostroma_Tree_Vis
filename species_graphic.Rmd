@@ -80,15 +80,20 @@ pie_buysky <- buysky %>%
   # Assigning label positions
   
 mutate(y_pos = (case_when(key == "aspen" ~ 100,
-                        key == "birch" ~  98,
-                        key == "birch_and_alder" ~ 95,
+                        key == "birch" ~  97,
+                        key == "birch_and_alder" ~ 94,
                       key == "birch_and_aspen" ~ 75,
-                      key == "pine" ~ 65))) %>%
-mutate(x_pos = (case_when(key == "aspen" ~ 1.5,
-                          key == "birch" ~ 1.5,
-                         key == "birch_and_alder" ~ 1.48,
-                         key == "birch_and_aspen" ~ 1.48,
-                         key == "pine" ~ 1.48)))  
+                      key == "pine" ~ 60,
+                      key =="spruce" ~ 40,
+                      key == "spruce_and_pine" ~ 20))) %>%
+  
+mutate(x_pos = (case_when(key == "aspen" ~ 1.6,
+                          key == "birch" ~ 1.6,
+                         key == "birch_and_alder" ~ 1.6,
+                         key == "birch_and_aspen" ~ 1.7,
+                         key == "pine" ~ 1.65,
+                         key =="spruce" ~ 1.65,
+                          key == "spruce_and_pine" ~ 1.55)))  
 
 
 pie_chart <- ggplot(pie_buysky, aes(x = 1, y=value, fill = key)) + 
@@ -98,9 +103,9 @@ pie_chart <- ggplot(pie_buysky, aes(x = 1, y=value, fill = key)) +
   theme(axis.line = element_blank(), 
         plot.title = element_text(hjust=0),
         axis.ticks = element_blank(),
-        # axis.text = element_blank(),
+        axis.text = element_blank(),
         panel.background = element_blank(),
-        # panel.grid = element_blank()
+        panel.grid = element_blank()
         ) + 
   
   labs(fill="key", 
@@ -115,20 +120,18 @@ pie_chart <- ggplot(pie_buysky, aes(x = 1, y=value, fill = key)) +
   
   guides(fill = guide_legend(title = "Species")) +
   
-  scale_fill_manual(labels = c("Aspen", "Birch", "Birch and Alder", "Birch and Aspen", "Pine", "Spruce", "Spruce and Pine"), values = cols) 
-
-pie_chart
-
-pie_chart <- pie_chart + geom_text(label = pie_buysky$value, x = pie_buysky$x_pos, y = pie_buysky$y_pos) 
+  scale_fill_manual(labels = c("Aspen", "Birch", "Birch and Alder", "Birch and Aspen", "Pine", "Spruce", "Spruce and Pine"), values = cols) +
+  geom_text(label = paste0(pie_buysky$value, "%"),
+                  x = pie_buysky$x_pos, 
+                  y = pie_buysky$y_pos,
+                  hjust = 0,
+                  size = 2.5,
+                  segment.color = "grey50",
+                  direction = "x") 
  
 
 pie_chart
-#  geom_text(label = "31%", y = 84.5, x = 1.2) +
-#   
-#   geom_text(aes(x = 1.5, y = pos, label = paste0(round(value), "%")),
-#                   # hjust = 1.2,
-#                   segment.color = "grey50",
-#                   direction = "y")
+
 
   
 
