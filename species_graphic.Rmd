@@ -139,3 +139,66 @@ pie_chart
 
 ```
 
+```{r dot plot}
+
+cols <- c("seagreen1", "seagreen3", "seagreen4", "slateblue4", "skyblue3", "slategray3", "navy", "slateblue2", "seagreen2")
+
+
+dot_plot <- species_data %>%
+  filter(district != "total_deciduous", 
+         district != "total_conifer", 
+         district != "All", 
+         district != "Total for southwest",
+         district != "Total for northeast",
+         district != "Total for southeast") %>%
+  filter(tree_species != "total_conifer",
+         tree_species != "total_deciduous",
+         tree_species != "other_conifers",
+         tree_species != "other_deciduous") %>%
+  mutate(tree_species = case_when(tree_species == "alder" ~ "Alder", 
+                                  tree_species == "aspen" ~ "Aspen", 
+                                  tree_species == "birch" ~ "Birch", 
+                                  tree_species == "birch_and_alder" ~ "Birch and Alder", 
+                                  tree_species == "birch_and_aspen" ~ "Birch and Aspen",
+                                  tree_species == "pine" ~ "Pine",
+                                  tree_species == "spruce" ~ "Spruce",
+                                  tree_species == "spruce_and_fir" ~ "Spruce and Fir", 
+                                  tree_species == "spruce_and_pine" ~ "Spruce and Pine")) %>%
+  mutate(district = str_remove(district, " District"))
+
+
+
+  # can filter for a specific district to only make a dot plot of that. Can also use facet wrap to compare them all
+
+dot_plot_var <- dot_plot %>%
+  filter(district == "Varnavinsky") 
+  
+# For ordering
+
+dot_plot_var <- dot_plot_var[order(dot_plot_var$quantity), ]  
+dot_plot_var$tree_species <- factor(dot_plot_var$tree_species, levels = dot_plot_var$tree_species)
+  
+ggplot(dot_plot_var, aes(x = tree_species, y = quantity, color = tree_species)) +
+  geom_point(size = 3) +
+  geom_segment(aes(x = tree_species, 
+                   xend = tree_species, 
+                   y = min(quantity), 
+                   yend = max(quantity)), 
+               linetype="dashed", 
+               size=0.1) +
+  coord_flip() +
+  # facet_wrap(~district, nrow = 2, ncol = 6) +
+  labs(title="Tree Species in Varnavinsky District, Kostroma Province", 
+       subtitle="Species counts", 
+       caption="Caption here",
+       x = "Species",
+       y = "Quantity")  +
+  scale_color_manual(labels = c("Alder", "Aspen", "Birch", "Birch and Alder", "Birch and Aspen", "Pine", "Spruce", "Spruce and Fir", "Spruce and Pine"), values = cols) +
+  theme(legend.position="none") +
+  
+  # Force out of scientific notation
+  
+  scale_y_continuous(labels = comma)
+
+```
+
