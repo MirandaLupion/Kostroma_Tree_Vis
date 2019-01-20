@@ -32,12 +32,22 @@ kos_map <- readOGR(dsn = "kos_shp", layer = "kos_shape_georef")
 kos_map <- spTransform(kos_map, CRS("+init=epsg:4326"))
 kos_map_per_cap <- merge(kos_map, per_cap, by = "OBJECTID", duplicateGeoms = FALSE)
 
+nc_pal <- colorBin(palette = "Blues", bins = 5,
+                       domain = kos_map_per_cap@data$per_cap_tree_desyatin)
+
 kos_map_per_cap %>%
   leaflet() %>%
   addTiles() %>%
-  addPolygons(weight = 1,
-              color = "blue",
-              label = ~paste0(district),
+  addPolygons(weight = 2,
+              fillOpacity = .75,
+              color = ~nc_pal(per_cap_tree_desyatin),
+              label = ~paste0(district, " - Forested land per capita (in desyatins): ", per_cap_tree_desyatin),
               highlight = highlightOptions(weight = 3,
                                            color = "red",
-                                           bringToFront = TRUE))
+                                           bringToFront = TRUE)) %>%
+  addLegend("bottomright",
+            pal = nc_pal,
+            values = ~per_cap_tree_desyatin,
+            na.label = "NA",
+            title = "Forested land per capita (in desyatins)",
+            opacity = 1)
