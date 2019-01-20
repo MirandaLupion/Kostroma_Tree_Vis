@@ -3,6 +3,7 @@ library(leaflet)
 library(rgdal)
 library(tidyverse)
 library(readr)
+library(htmlwidgets)
 
 # Import the CSV in
 # Add an OBJECTID to merge with shapefile by 
@@ -38,6 +39,8 @@ nc_pal <- colorBin(palette = "Blues", bins = 5,
 kos_map_per_cap %>%
   leaflet() %>%
   addTiles() %>%
+  setView(lat = 57, lng = 62, zoom = 6) %>%
+  setMaxBounds(lng1 = 55, lat1 = 48, lng2 = 68, lat2 = 60) %>%
   addPolygons(weight = 2,
               fillOpacity = .75,
               color = ~nc_pal(per_cap_tree_desyatin),
@@ -51,3 +54,6 @@ kos_map_per_cap %>%
             na.label = "NA",
             title = "Forested land per capita (in desyatins)",
             opacity = 1)
+
+
+#saveWidget(m, file="kostroma_per_cap.html")
