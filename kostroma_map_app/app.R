@@ -39,7 +39,7 @@ label_options <- c(" desyatins" = "total_area_desyatin_1908",
 
 # Define UI for application that allows the users to map a given data set
 
-ui <- fluidPage(
+ui <- fluidPage(theme = shinytheme("paper"),
    
    # Application title
   
@@ -51,7 +51,7 @@ ui <- fluidPage(
       sidebarPanel(
         
          selectInput(inputId = "year",
-                    label = "Select a year to view data",
+                    label = "Select a year to view possible data sets",
                     choices = c(1818, 1848, 1908),
                     selected = NULL),
 
@@ -59,6 +59,7 @@ ui <- fluidPage(
          uiOutput("ui")),
       
       mainPanel(
+        htmlOutput("title"),
         leafletOutput("map", width = "100%", height = "500px"))))
 
 # Define server logic required to draw a histogram
@@ -93,12 +94,12 @@ server <- function(input, output, session) {
   output$map <- renderLeaflet({
     kos_map <- merge(kos_map, map_subset(), by = "OBJECTID", duplicateGeoms = FALSE)
     
-    nc_pal <- colorBin(palette = "Blues", bins = 5,
+    nc_pal <- colorBin(palette = "YlGnBu", bins = 5,
                        domain = kos_map@data$selected_var)
     
     kos_map %>%
       leaflet() %>%
-      addTiles() %>%
+      addProviderTiles(providers$OpenStreetMap.BlackAndWhite) %>%
       setView(lat = 57, lng = 62, zoom = 6) %>%
       setMaxBounds(lng1 = 55, lat1 = 48, lng2 = 68, lat2 = 60) %>%
       addPolygons(weight = 2,
@@ -117,12 +118,16 @@ server <- function(input, output, session) {
                 pal = nc_pal,
                 values = ~selected_var,
                 na.label = "NA",
-                title = names(data_options[which(data_options == input$map_var)]),
+                title = paste0(names(data_options[which(data_options == input$map_var)]), 
+                               " (", 
+                               names(label_options[which(label_options == input$map_var)]), ")"),
                 opacity = 1)
     
   })
 
-    
+output$title <- renderUI({
+  h4(paste0(names(data_options[which(data_options == input$map_var)]), ", Kostroma Province (", input$year, ")"))
+})    
   
 }
 

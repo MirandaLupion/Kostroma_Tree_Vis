@@ -1,0 +1,12 @@
+name: kostroma_map_app
+title: kostroma_map_app
+username:
+account: mlupion
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 657967
+bundleId: 1827686
+url: https://mlupion.shinyapps.io/kostroma_map_app/
+when: 1548103318.32373
+asMultiple: FALSE
+asStatic: FALSE
