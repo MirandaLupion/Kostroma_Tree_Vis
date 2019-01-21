@@ -52,15 +52,15 @@ ui <- fluidPage(
         
          selectInput(inputId = "year",
                     label = "Select a year to view data",
-                    choices = c(1818, 1848, 1908),
-                    selected = 1818),
+                    choices = c(1818, 1848, 1908)),
 
 
-          
-        selectInput(inputId = "map_var",
-                    label = "Choose a data set to map",
-                    choices = data_options,
-                    selected = data_options[1])),
+         uiOutput("ui")),
+           
+        # selectInput(inputId = "map_var",
+        #             label = "Choose a data set to map",
+        #             choices = data_options,
+        #             selected = data_options[1])),
  
 
       # Show a plot of the generated distribution
@@ -70,38 +70,24 @@ ui <- fluidPage(
 
 # Define server logic required to draw a histogram
 server <- function(input, output, session) {
-#   
-# observeEvent(input$year, {
-# 
-#   if(input$year == 1818) {insertUI( selector = '#placeholder',  ui = tags$div(
-#     selectInput(inputId = "map_var",
-#                                        label = "Choose a data set to map",
-#                                        choices = data_options[3:4],
-#                                        selected = data_options[3]))
-#     ,
-#     id = id)
-#     )}
-#   else if (input$year == 1848) {insertUI( selector = '#placeholder',  ui = tags$div(
-#     selectInput(inputId = "map_var",
-#                                             label = "Choose a data set to map",
-#                                             choices = data_options[2],
-#                                             selected = data_options[2])),
-#     id = id)
-#     ) }
-#   else {
-#     insertUI( selector = '#placeholder',  ui = tags$div(
-#     selectInput(inputId = "map_var",
-#                 label = "Choose a data set to map",
-#                 choices = data_options[5:7],
-#                 selected = data_options[5])),
-#     id = id)}
-# 
-# 
-# inserted <<- c(id, inserted)
-#   
-#   
-# })
-  
+
+  output$ui <- renderUI({
+    if (is.null(input$year))
+      return()
+    switch(input$year,
+           "1818" = selectInput(inputId = "map_var",
+                                label = "Choose a data set to map",
+                                choices = data_options[3:4],
+                                selected = data_options[3]),
+            "1848" =  selectInput(inputId = "map_var",
+                                  label = "Choose a data set to map",
+                                  choices = data_options[2],
+                                  selected = data_options[2]),
+            "1908" =  selectInput(inputId = "map_var",
+                                  label = "Choose a data set to map",
+                                   choices = data_options[5:7],
+                                    selected = data_options[5]))
+  })  
   
   map_subset <- reactive({
     req(input$year, input$map_var)
@@ -142,8 +128,6 @@ server <- function(input, output, session) {
                 opacity = 1)
     
   })
-  
-  
 
     
   
