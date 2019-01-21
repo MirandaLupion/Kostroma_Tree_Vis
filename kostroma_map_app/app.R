@@ -11,9 +11,11 @@ library(readr)
 kos_map <- readOGR(dsn = "kos_shp", layer = "kos_shape_georef")
 kos_map <- spTransform(kos_map, CRS("+init=epsg:4326"))
 
-# data import
+# Data import
 
-map_data <- read_csv("kostroma_map_app/kostroma_map_data.csv")
+map_data <- read_csv("kostroma_map_data.csv")
+
+# Create vector of neat names for labeling and the UI
 
 data_options <- c("Total area" = "total_area_desyatin_1908", 
                   "Trees per capita (1848)" = "per_cap_tree_desyatin_1848", 
@@ -22,6 +24,18 @@ data_options <- c("Total area" = "total_area_desyatin_1908",
                   "Forested area (1908)" = "forested_area_1908",
                   "Forest cover as a percent of total area (1908)" = "percent_forested_1908",
                   "Percent change in forested area from 1818 to 1908" = "percent_change_forested_area") 
+
+
+# Create a vector of data type labels to add to the 
+
+label_options <- c(" desyatins" = "total_area_desyatin_1908", 
+                  "%" = "per_cap_tree_desyatin_1848", 
+                  " desyatins" = "forested_area_1818",
+                  "%" = "percent_forested_1818",
+                  " desyatins" = "forested_area_1908",
+                  "%" = "percent_forested_1908",
+                  "%" = "percent_change_forested_area") 
+
 
 # Define UI for application that allows the users to map a given data set
 
@@ -35,37 +49,75 @@ ui <- fluidPage(
    
    sidebarLayout(
       sidebarPanel(
-        selectInput(inputId = "map_var", 
-                    label = "Indicator* to map", 
-                    choices = crime_options_map,
-                    selected = crime_options_map[1]),
         
-        htmlOutput("define_variables_map")),
-      
+         selectInput(inputId = "year",
+                    label = "Select a year to view data",
+                    choices = c(1818, 1848, 1908),
+                    selected = 1818),
+
+
+          
+        selectInput(inputId = "map_var",
+                    label = "Choose a data set to map",
+                    choices = data_options,
+                    selected = data_options[1])),
+ 
+
       # Show a plot of the generated distribution
       
       mainPanel(
         leafletOutput("map", width = "100%", height = "500px"))))
 
 # Define server logic required to draw a histogram
-server <- function(input, output) {
-   
+server <- function(input, output, session) {
+#   
+# observeEvent(input$year, {
+# 
+#   if(input$year == 1818) {insertUI( selector = '#placeholder',  ui = tags$div(
+#     selectInput(inputId = "map_var",
+#                                        label = "Choose a data set to map",
+#                                        choices = data_options[3:4],
+#                                        selected = data_options[3]))
+#     ,
+#     id = id)
+#     )}
+#   else if (input$year == 1848) {insertUI( selector = '#placeholder',  ui = tags$div(
+#     selectInput(inputId = "map_var",
+#                                             label = "Choose a data set to map",
+#                                             choices = data_options[2],
+#                                             selected = data_options[2])),
+#     id = id)
+#     ) }
+#   else {
+#     insertUI( selector = '#placeholder',  ui = tags$div(
+#     selectInput(inputId = "map_var",
+#                 label = "Choose a data set to map",
+#                 choices = data_options[5:7],
+#                 selected = data_options[5])),
+#     id = id)}
+# 
+# 
+# inserted <<- c(id, inserted)
+#   
+#   
+# })
+  
+  
   map_subset <- reactive({
     req(input$year, input$map_var)
-    crime_map %>%
-      filter(YEAR == input$year) %>%
-      select(ID_1, NAME, input$map_var) %>%
+    map_data %>%
+      select(OBJECTID, district, input$map_var) %>%
       rename(selected_var = input$map_var)}) 
-    
-
-    
+  
+  
+  
   output$map <- renderLeaflet({
-    kos_map_per_cap <- merge(kos_map, per_cap, by = "OBJECTID", duplicateGeoms = FALSE)
+    kos_map <- merge(kos_map, map_subset(), by = "OBJECTID", duplicateGeoms = FALSE)
     
     nc_pal <- colorBin(palette = "Blues", bins = 5,
-                       domain = kos_map_per_cap@data$selected_var)
+                       domain = kos_map@data$selected_var)
     
-    kos_map_per_cap %>%
+    kos_map %>%
       leaflet() %>%
       addTiles() %>%
       setView(lat = 57, lng = 62, zoom = 6) %>%
@@ -73,7 +125,12 @@ server <- function(input, output) {
       addPolygons(weight = 2,
                   fillOpacity = .75,
                   color = ~nc_pal(selected_var),
-                  label = ~paste0(district, " - Forested land per capita (in desyatins): ", per_cap_tree_desyatin),
+                  label = ~paste0(district, 
+                                  ", ", 
+                                  str_to_lower(names(data_options[which(data_options == input$map_var)])), 
+                                  ": ", 
+                                  selected_var, 
+                                  names(label_options[which(label_options == input$map_var)])),
                   highlight = highlightOptions(weight = 3,
                                                color = "red",
                                                bringToFront = TRUE)) %>%
@@ -81,12 +138,14 @@ server <- function(input, output) {
                 pal = nc_pal,
                 values = ~selected_var,
                 na.label = "NA",
-                title = "Forested land per capita (in desyatins)",
+                title = names(data_options[which(data_options == input$map_var)]),
                 opacity = 1)
     
-    
   })
+  
+  
 
+    
   
 }
 
