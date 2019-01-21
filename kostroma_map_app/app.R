@@ -18,18 +18,18 @@ map_data <- read_csv("kostroma_map_data.csv")
 # Create vector of neat names for labeling and the UI
 
 data_options <- c("Total area" = "total_area_desyatin_1908", 
-                  "Trees per capita (1848)" = "per_cap_tree_desyatin_1848", 
-                  "Forested area (1818)" = "forested_area_1818",
-                  "Forest cover as a percent of total area (1818)" = "percent_forested_1818",
-                  "Forested area (1908)" = "forested_area_1908",
-                  "Forest cover as a percent of total area (1908)" = "percent_forested_1908",
+                  "Forested area per capita" = "per_cap_tree_desyatin_1848", 
+                  "Forested area" = "forested_area_1818",
+                  "Forest cover as a percent of total area" = "percent_forested_1818",
+                  "Forested area" = "forested_area_1908",
+                  "Forest cover as a percent of total area" = "percent_forested_1908",
                   "Percent change in forested area from 1818 to 1908" = "percent_change_forested_area") 
 
 
 # Create a vector of data type labels to add to the 
 
 label_options <- c(" desyatins" = "total_area_desyatin_1908", 
-                  "%" = "per_cap_tree_desyatin_1848", 
+                  " desyatins" = "per_cap_tree_desyatin_1848", 
                   " desyatins" = "forested_area_1818",
                   "%" = "percent_forested_1818",
                   " desyatins" = "forested_area_1908",
@@ -43,7 +43,7 @@ ui <- fluidPage(
    
    # Application title
   
-   titlePanel("Mapping Kostroma Province"),
+   titlePanel("Mapping Tree Cover in Kostroma Province"),
    
    # Ability to delect the data set to map
    
@@ -52,18 +52,11 @@ ui <- fluidPage(
         
          selectInput(inputId = "year",
                     label = "Select a year to view data",
-                    choices = c(1818, 1848, 1908)),
+                    choices = c(1818, 1848, 1908),
+                    selected = NULL),
 
 
          uiOutput("ui")),
-           
-        # selectInput(inputId = "map_var",
-        #             label = "Choose a data set to map",
-        #             choices = data_options,
-        #             selected = data_options[1])),
- 
-
-      # Show a plot of the generated distribution
       
       mainPanel(
         leafletOutput("map", width = "100%", height = "500px"))))
