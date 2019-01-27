@@ -10,6 +10,8 @@ library(readr)
 
 kos_map <- readOGR(dsn = "kos_shp", layer = "kos_shape_georef")
 kos_map <- spTransform(kos_map, CRS("+init=epsg:4326"))
+ras <- raster::raster("raster_file/kos_his_georef.tif") %>%
+  raster::aggregate(fact = 4, fun = mean)
 
 # Data import
 
@@ -94,12 +96,20 @@ server <- function(input, output, session) {
   output$map <- renderLeaflet({
     kos_map <- merge(kos_map, map_subset(), by = "OBJECTID", duplicateGeoms = FALSE)
     
+    # Color pal for the shapefile 
+    
     nc_pal <- colorBin(palette = "YlGnBu", bins = 5,
                        domain = kos_map@data$selected_var)
     
+    # Color pal for the raster
+    
+    pal_ras <- colorNumeric("Greys", domain = NULL,
+                            na.color = "transparent")
+    
     kos_map %>%
       leaflet() %>%
-      addProviderTiles(providers$OpenStreetMap.BlackAndWhite) %>%
+      addProviderTiles(providers$Stamen.Watercolor) %>%
+      addRasterImage(ras, colors = pal_ras, opacity = 0.8) %>% 
       setView(lat = 57, lng = 62, zoom = 6) %>%
       setMaxBounds(lng1 = 55, lat1 = 48, lng2 = 68, lat2 = 60) %>%
       addPolygons(weight = 2,
