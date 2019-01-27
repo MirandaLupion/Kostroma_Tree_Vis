@@ -6,12 +6,15 @@ library(shinythemes)
 library(tidyverse)
 library(readr)
 
-# Map data prep 
+# Shapefile data prep 
 
 kos_map <- readOGR(dsn = "kos_shp", layer = "kos_shape_georef")
 kos_map <- spTransform(kos_map, CRS("+init=epsg:4326"))
+
+# Raster prep - need to decrease the size to add the layer
+
 ras <- raster::raster("raster_file/kos_his_georef.tif") %>%
-  raster::aggregate(fact = 4, fun = mean)
+  raster::aggregate(fact = 3, fun = mean)
 
 # Data import
 
@@ -58,7 +61,11 @@ ui <- fluidPage(theme = shinytheme("paper"),
                     selected = NULL),
 
 
-         uiOutput("ui")),
+         uiOutput("ui"),
+         
+         checkboxInput(inputId = "box",
+                       label = "Add historical base map (1822)",
+                       value = FALSE)),
       
       mainPanel(
         htmlOutput("title"),
@@ -66,7 +73,7 @@ ui <- fluidPage(theme = shinytheme("paper"),
 
 # Define server logic required to draw a histogram
 server <- function(input, output, session) {
-
+  
   output$ui <- renderUI({
     if (is.null(input$year))
       return()
@@ -91,29 +98,46 @@ server <- function(input, output, session) {
       select(OBJECTID, district, input$map_var) %>%
       rename(selected_var = input$map_var)}) 
   
-  
-  
   output$map <- renderLeaflet({
+    
     kos_map <- merge(kos_map, map_subset(), by = "OBJECTID", duplicateGeoms = FALSE)
     
     # Color pal for the shapefile 
     
-    nc_pal <- colorBin(palette = "YlGnBu", bins = 5,
+    nc_pal <- colorBin(palette = "Greens", bins = 5,
                        domain = kos_map@data$selected_var)
+    
+    # Create basic map 
+    
+    kos_map <- kos_map %>%
+      leaflet() %>%
+      addProviderTiles(providers$Stamen.Watercolor) %>%
+      setView(lat = 57, lng = 62, zoom = 6) %>%
+      setMaxBounds(lng1 = 55, lat1 = 48, lng2 = 68, lat2 = 60) %>%
+      addLegend("bottomright",
+                pal = nc_pal,
+                values = ~selected_var,
+                na.label = "NA",
+                title = paste0(names(data_options[which(data_options == input$map_var)]), 
+                               " (", 
+                               names(label_options[which(label_options == input$map_var)]), ")"),
+                opacity = 1) 
+   
+    # If historical basemap option is checked, add the following elements to the map 
+     
+    if (input$box == TRUE) {
+    
     
     # Color pal for the raster
     
-    pal_ras <- colorNumeric("Greys", domain = NULL,
-                            na.color = "transparent")
+    # pal_ras <- colorNumeric(palette = "Greys", domain = NULL,
+    #                         na.color = "transparent")
+      #(AFTER RAS) colors = pal_ras, 
     
     kos_map %>%
-      leaflet() %>%
-      addProviderTiles(providers$Stamen.Watercolor) %>%
-      addRasterImage(ras, colors = pal_ras, opacity = 0.8) %>% 
-      setView(lat = 57, lng = 62, zoom = 6) %>%
-      setMaxBounds(lng1 = 55, lat1 = 48, lng2 = 68, lat2 = 60) %>%
-      addPolygons(weight = 2,
-                  fillOpacity = .75,
+      addRasterImage(ras, opacity = 0.8) %>% 
+      addPolygons(weight = 4,
+                  fillOpacity = .7,
                   color = ~nc_pal(selected_var),
                   label = ~paste0(district, 
                                   ", ", 
@@ -123,15 +147,28 @@ server <- function(input, output, session) {
                                   names(label_options[which(label_options == input$map_var)])),
                   highlight = highlightOptions(weight = 3,
                                                color = "red",
-                                               bringToFront = TRUE)) %>%
-      addLegend("bottomright",
-                pal = nc_pal,
-                values = ~selected_var,
-                na.label = "NA",
-                title = paste0(names(data_options[which(data_options == input$map_var)]), 
-                               " (", 
-                               names(label_options[which(label_options == input$map_var)]), ")"),
-                opacity = 1)
+                                               bringToFront = TRUE)) 
+    
+    # If historical basemap option is NOT checked, just add the polygons to the basic map 
+    
+    } else {
+      
+      kos_map %>%
+        addPolygons(stroke = TRUE,
+                    weight = 4,
+                    fillOpacity = .7,
+                    color = ~nc_pal(selected_var),
+                    label = ~paste0(district, 
+                                    ", ", 
+                                    str_to_lower(names(data_options[which(data_options == input$map_var)])), 
+                                    ": ", 
+                                    selected_var, 
+                                    names(label_options[which(label_options == input$map_var)])),
+                    highlight = highlightOptions(weight = 3,
+                                                 color = "red",
+                                                 bringToFront = TRUE)) 
+      
+    }
     
   })
 
@@ -142,5 +179,6 @@ output$title <- renderUI({
 }
 
 # Run the application 
+
 shinyApp(ui = ui, server = server)
 
