@@ -11,6 +11,9 @@ library(readr)
 kos_map <- readOGR(dsn = "kos_shp", layer = "kos_shape_georef")
 kos_map <- spTransform(kos_map, CRS("+init=epsg:4326"))
 
+rivers <- readOGR(dsn ="kos_rivers_shp", layer ="kos_rivers_clip")
+rivers <- spTransform(rivers, CRS("+proj=longlat +init=epsg:4326"))
+
 # Raster prep - need to decrease the size to add the layer
 
 ras <- raster::raster("raster_file/kos_his_georef.tif") %>%
@@ -99,6 +102,7 @@ server <- function(input, output, session) {
       rename(selected_var = input$map_var)}) 
   
   output$map <- renderLeaflet({
+
     
     kos_map <- merge(kos_map, map_subset(), by = "OBJECTID", duplicateGeoms = FALSE)
     
@@ -109,10 +113,15 @@ server <- function(input, output, session) {
     
     # Create basic map 
     
-    kos_map <- kos_map %>%
+    kos_map <- kos_map %>% 
       leaflet() %>%
-      addProviderTiles(providers$Stamen.Watercolor) %>%
+      addProviderTiles(providers$Stamen.Watercolor, group = "Stamen") %>%
       setView(lat = 57, lng = 62, zoom = 6) %>%
+      addPolylines(data = rivers, 
+                   weight = 2,
+                   opacity = 1,
+                   color = "blue",
+                   group = "Rivers") %>%
       # setMaxBounds(lng1 = 55, lat1 = 48, lng2 = 68, lat2 = 60) %>%
       addLegend("bottomright",
                 pal = nc_pal,
@@ -121,8 +130,14 @@ server <- function(input, output, session) {
                 title = paste0(names(data_options[which(data_options == input$map_var)]), 
                                " (", 
                                names(label_options[which(label_options == input$map_var)]), ")"),
-                opacity = 1) 
+                opacity = 1)  %>%
+      addLayersControl(
+        baseGroups = c("Stamen"),
+        overlayGroups = c("Rivers"),
+        options = layersControlOptions(collapsed = FALSE))
    
+   
+    
     # If historical basemap option is checked, add the following elements to the map 
      
     if (input$box == TRUE) {
@@ -147,7 +162,7 @@ server <- function(input, output, session) {
                                   names(label_options[which(label_options == input$map_var)])),
                   highlight = highlightOptions(weight = 3,
                                                color = "red",
-                                               bringToFront = TRUE)) 
+                                               bringToFront = TRUE))
     
     # If historical basemap option is NOT checked, just add the polygons to the basic map 
     
@@ -167,6 +182,7 @@ server <- function(input, output, session) {
                     highlight = highlightOptions(weight = 3,
                                                  color = "red",
                                                  bringToFront = TRUE)) 
+
       
     }
     
