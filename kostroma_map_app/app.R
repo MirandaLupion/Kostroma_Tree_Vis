@@ -14,7 +14,7 @@ kos_map <- spTransform(kos_map, CRS("+init=epsg:4326"))
 # Raster prep - need to decrease the size to add the layer
 
 ras <- raster::raster("raster_file/kos_his_georef.tif") %>%
-  raster::aggregate(fact = 3, fun = mean)
+  raster::aggregate(fact = 2, fun = mean)
 
 # Data import
 
@@ -113,7 +113,7 @@ server <- function(input, output, session) {
       leaflet() %>%
       addProviderTiles(providers$Stamen.Watercolor) %>%
       setView(lat = 57, lng = 62, zoom = 6) %>%
-      setMaxBounds(lng1 = 55, lat1 = 48, lng2 = 68, lat2 = 60) %>%
+      # setMaxBounds(lng1 = 55, lat1 = 48, lng2 = 68, lat2 = 60) %>%
       addLegend("bottomright",
                 pal = nc_pal,
                 values = ~selected_var,
@@ -130,12 +130,12 @@ server <- function(input, output, session) {
     
     # Color pal for the raster
     
-    # pal_ras <- colorNumeric(palette = "Greys", domain = NULL,
-    #                         na.color = "transparent")
+    pal_ras <- colorNumeric(palette = "Greys", domain = NULL,
+                            na.color = "transparent")
       #(AFTER RAS) colors = pal_ras, 
     
     kos_map %>%
-      addRasterImage(ras, opacity = 0.8) %>% 
+      addRasterImage(ras, color = pal_ras, opacity = 0.8) %>% 
       addPolygons(weight = 4,
                   fillOpacity = .7,
                   color = ~nc_pal(selected_var),
