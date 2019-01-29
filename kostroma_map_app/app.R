@@ -9,7 +9,7 @@ library(readr)
 # Shapefile data prep 
 
 kos_map <- readOGR(dsn = "kos_shp", layer = "kos_shape_georef")
-kos_map <- spTransform(kos_map, CRS("+init=epsg:4326"))
+kos_map <- spTransform(kos_map, CRS("+proj=longlat +init=epsg:4326"))
 
 rivers <- readOGR(dsn ="kos_rivers_shp", layer ="kos_rivers_clip")
 rivers <- spTransform(rivers, CRS("+proj=longlat +init=epsg:4326"))
@@ -64,11 +64,7 @@ ui <- fluidPage(theme = shinytheme("paper"),
                     selected = NULL),
 
 
-         uiOutput("ui"),
-         
-         checkboxInput(inputId = "box",
-                       label = "Add historical base map (1822)",
-                       value = FALSE)),
+         uiOutput("ui")),
       
       mainPanel(
         htmlOutput("title"),
@@ -111,49 +107,33 @@ server <- function(input, output, session) {
     nc_pal <- colorBin(palette = "Greens", bins = 5,
                        domain = kos_map@data$selected_var)
     
+    # Color pal for the historical basemap
+    
+    pal_ras <- colorNumeric(palette = "Greys", domain = NULL,
+                            na.color = "transparent")
+    
     # Create basic map 
     
     kos_map <- kos_map %>% 
       leaflet() %>%
-      addProviderTiles(providers$Stamen.Watercolor, group = "Stamen") %>%
+      
+      # Give users a choice of basemaps
+      
+      addProviderTiles(providers$Stamen.Watercolor, group = "Stamen Watercolor") %>%
+      addProviderTiles(providers$Esri.WorldPhysical, group = "Physical Map") %>%
+      
+      # Set the initial view
+      
       setView(lat = 57, lng = 62, zoom = 6) %>%
-      addPolylines(data = rivers, 
-                   weight = 2,
-                   opacity = 1,
-                   color = "blue",
-                   group = "Rivers") %>%
-      # setMaxBounds(lng1 = 55, lat1 = 48, lng2 = 68, lat2 = 60) %>%
-      addLegend("bottomright",
-                pal = nc_pal,
-                values = ~selected_var,
-                na.label = "NA",
-                title = paste0(names(data_options[which(data_options == input$map_var)]), 
-                               " (", 
-                               names(label_options[which(label_options == input$map_var)]), ")"),
-                opacity = 1)  %>%
-      addLayersControl(
-        baseGroups = c("Stamen"),
-        overlayGroups = c("Rivers"),
-        options = layersControlOptions(collapsed = FALSE))
-   
-   
-    
-    # If historical basemap option is checked, add the following elements to the map 
-     
-    if (input$box == TRUE) {
-    
-    
-    # Color pal for the raster
-    
-    pal_ras <- colorNumeric(palette = "Greys", domain = NULL,
-                            na.color = "transparent")
-      #(AFTER RAS) colors = pal_ras, 
-    
-    kos_map %>%
-      addRasterImage(ras, color = pal_ras, opacity = 0.8) %>% 
-      addPolygons(weight = 4,
+      
+      # Polygons
+      
+      addPolygons(stroke = TRUE,
+                  weight = 2,
                   fillOpacity = .7,
-                  color = ~nc_pal(selected_var),
+                  opacity = .5,
+                  fillColor = ~nc_pal(selected_var),
+                  color = "white",
                   label = ~paste0(district, 
                                   ", ", 
                                   str_to_lower(names(data_options[which(data_options == input$map_var)])), 
@@ -162,30 +142,43 @@ server <- function(input, output, session) {
                                   names(label_options[which(label_options == input$map_var)])),
                   highlight = highlightOptions(weight = 3,
                                                color = "red",
-                                               bringToFront = TRUE))
-    
-    # If historical basemap option is NOT checked, just add the polygons to the basic map 
-    
-    } else {
+                                               bringToFront = TRUE)) %>%
       
-      kos_map %>%
-        addPolygons(stroke = TRUE,
-                    weight = 4,
-                    fillOpacity = .7,
-                    color = ~nc_pal(selected_var),
-                    label = ~paste0(district, 
-                                    ", ", 
-                                    str_to_lower(names(data_options[which(data_options == input$map_var)])), 
-                                    ": ", 
-                                    selected_var, 
-                                    names(label_options[which(label_options == input$map_var)])),
-                    highlight = highlightOptions(weight = 3,
-                                                 color = "red",
-                                                 bringToFront = TRUE)) 
-
+      # River polylines
       
-    }
+      addPolylines(data = rivers, 
+                   weight = 2,
+                   opacity = 1,
+                   color = "blue",
+                   group = "Rivers") %>%
     
+      # 1822 map
+      
+      addRasterImage(ras, color = pal_ras, opacity = 0.8, group = "1822 Historical Map") %>%
+      
+       setMaxBounds(lng1 = 55, lat1 = 40, lng2 = 68, lat2 = 70) %>%
+      
+      addLegend("bottomright",
+                pal = nc_pal,
+                values = ~selected_var,
+                na.label = "NA",
+                title = paste0(names(data_options[which(data_options == input$map_var)]), 
+                               " (", 
+                               names(label_options[which(label_options == input$map_var)]), ")"),
+                opacity = 1)  %>%
+     
+      # Give the user layers control
+      
+      addLayersControl(
+        baseGroups = c("Stamen Watercolor", "Physical Map"),
+        overlayGroups = c("Rivers", "1822 Historical Map"),
+        options = layersControlOptions(collapsed = FALSE)) %>% 
+     
+      # Rivers and historical map not present on the map by default 
+      
+      hideGroup("Rivers") %>%
+      hideGroup("1822 Historical Map")
+   
   })
 
 output$title <- renderUI({
