@@ -67,8 +67,14 @@ ui <- fluidPage(theme = shinytheme("paper"),
          uiOutput("ui")),
       
       mainPanel(
-        htmlOutput("title"),
-        leafletOutput("map", width = "100%", height = "500px"))))
+        tabsetPanel(
+          tabPanel("The Map",
+                    htmlOutput("title"),
+                    leafletOutput("map", width = "100%", height = "500px")),
+          tabPanel("Data sources",
+                   htmlOutput("sources"))
+        
+        ))))
 
 # Define server logic required to draw a histogram
 server <- function(input, output, session) {
@@ -184,6 +190,43 @@ server <- function(input, output, session) {
 output$title <- renderUI({
   h4(paste0(names(data_options[which(data_options == input$map_var)]), ", Kostroma Province (", input$year, ")"))
 })    
+
+# Tab for source info 
+
+output$sources <- renderUI({
+  HTML(paste(br(),
+  
+  h4("1818"),
+  tags$a(href = "https://www.prlib.ru/item/683125", "Forested area - "),
+  p("Федорович, Дюбюк Евгений [Fedorovich, Dyubyuk Evgeniy]. “Материалы Для Оценки Земель Костромской Губернии. Т. 13. Леса и Лесное Хозяйство Костромской Губернии, Таблица 4 [Material for Evaluating Kostroma Province - Forests and Forestry of Kostroma Province, Table 4].” типография Х. А. Гелина [H.A. Gelin's Press], 1912, p. 27."),
+  tags$a(href = "https://www.prlib.ru/item/683125", "Forest cover as a percent of total area - "),
+  p("Федорович, Дюбюк Евгений [Fedorovich, Dyubyuk Evgeniy]. “Материалы Для Оценки Земель Костромской Губернии. Т. 13. Леса и Лесное Хозяйство Костромской Губернии, Таблица 4 [Material for Evaluating Kostroma Province - Forests and Forestry of Kostroma Province, Table 4].” типография Х. А. Гелина [H.A. Gelin's Press], 1912, p. 27."),
+  br(),
+  
+  h4("1848"),
+  tags$a(href = "http://elib.shpl.ru/ru/nodes/48-ch-3-kostromskaya-guberniya-1848-6-104-20-c-5-l-19-s-tabl#mode/inspect/page/151/zoom/4", 
+         "Forested area per capita - "), 
+  p("“Военно-Статистическое Обозрение Российской Империи - Костромская Губерния, Таблица 12 [Military Statistical Survey of the Russian Empire - Kostroma Guberniia, Table 12].” типография Департамента Генерального Штаба [Department of General Staff Press], 1848." ),
+  br(),
+  
+  h4("1908"),
+  tags$a(href = "https://www.prlib.ru/item/683125", "Forested area - "),
+  p("Федорович, Дюбюк Евгений [Fedorovich, Dyubyuk Evgeniy]. “Материалы Для Оценки Земель Костромской Губернии. Т. 13. Леса и Лесное Хозяйство Костромской Губернии, Таблица 1 [Material for Evaluating Kostroma Province - Forests and Forestry of Kostroma Province, Table 1].” типография Х. А. Гелина [H.A. Gelin's Press], 1912, p. 15."),
+  tags$a(href = "https://www.prlib.ru/item/683125", "Forest cover as a percent of total area - "),
+  p("Федорович, Дюбюк Евгений [Fedorovich, Dyubyuk Evgeniy]. “Материалы Для Оценки Земель Костромской Губернии. Т. 13. Леса и Лесное Хозяйство Костромской Губернии, Таблица 1 [Material for Evaluating Kostroma Province - Forests and Forestry of Kostroma Province, Table 1].” типография Х. А. Гелина [H.A. Gelin's Press], 1912, p. 15."),
+  tags$a(href = "https://www.prlib.ru/item/683125", "Percent change in forested area from 1818 to 1908 - "),
+  p("Федорович, Дюбюк Евгений [Fedorovich, Dyubyuk Evgeniy]. “Материалы Для Оценки Земель Костромской Губернии. Т. 13. Леса и Лесное Хозяйство Костромской Губернии, Таблица 4 [Material for Evaluating Kostroma Province - Forests and Forestry of Kostroma Province, Table 4].” типография Х. А. Гелина [H.A. Gelin's Press], 1912, p. 27."),
+  br(),
+  
+  h4("Geo-spatial data"),
+  tags$a(href = "https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/ZIZKQB", 
+         "Rivers shapefile - "),
+  p("O'Neill, Kelly, 2016, Rivers (named) of the Russian Empire (1820s), Harvard Dataverse, V1."),
+  tags$a(href = "http://dighist.fas.harvard.edu/projects/imperiia/document/716", "Historical map (1822) - "),
+  p("Kostromskaia guberniia,", em("Geographic Atlas of the Russian Empire, the Kingdom of Poland, and the Grand Duchy of Finland."))
+  ))
+  
+})
   
 }
 
