@@ -5,8 +5,9 @@ account: mlupion
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 657967
-bundleId: 1827686
+bundleId: 1849294
 url: https://mlupion.shinyapps.io/kostroma_map_app/
-when: 1548103318.32373
+when: 1548979343.97356
 asMultiple: FALSE
 asStatic: FALSE
+ignoredFiles: raster_file/kos_his_georef.tfw|raster_file/kos_his_georef.tif.aux.xml|raster_file/kos_his_georef.tif.ovr
