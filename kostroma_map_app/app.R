@@ -1,10 +1,14 @@
 library(shiny)
-library(rsconnect)
-library(leaflet)
-library(rgdal)
 library(shinythemes)
-library(tidyverse)
+library(rsconnect)
+library(rgdal)
+library(plotly)
 library(readr)
+library(scales)
+library(stringr)
+library(DT)
+library(leaflet)
+library(tidyverse)
 
 # Shapefile data prep 
 
@@ -47,37 +51,44 @@ label_options <- c(" desyatins" = "total_area_desyatin_1908",
 
 # Define UI for application that allows the users to map a given data set
 
-ui <- fluidPage(theme = shinytheme("paper"),
+# Application title
+
+ui <- navbarPage("Tree Cover in Kostroma Province", theme = shinytheme("paper"),
+    
+   # Ability to select the data set to map
    
-   # Application title
-  
-   titlePanel("Mapping Tree Cover in Kostroma Province"),
-   
-   # Ability to delect the data set to map
-   
-   sidebarLayout(
+   tabPanel("The Map",
+   sidebarLayout(position = "right",
       sidebarPanel(
-        
          selectInput(inputId = "year",
                     label = "Select a year to view possible data sets",
                     choices = c(1818, 1848, 1908),
                     selected = NULL),
 
-
-         uiOutput("ui")),
+         uiOutput("ui"),
+         br(),
+         br(),
+         img(src ="logo.png", height = 200, width = 200)),
       
       mainPanel(
-        tabsetPanel(
-          tabPanel("The Map",
-                    htmlOutput("title"),
-                    leafletOutput("map", width = "100%", height = "500px")),
-          tabPanel("Data sources",
+        htmlOutput("title"),
+        leafletOutput("map", width = "100%", height = "500px")))),
+      
+    tabPanel("Data Sources",
+               sidebarLayout(
+                 sidebarPanel(
+                   img(src ="logo.png", height = 200, width = 200),
+                   p("Credits...")
+                 ),
+                 mainPanel(
                    htmlOutput("sources"))
         
-        ))))
+        )))
 
 # Define server logic required to draw a histogram
 server <- function(input, output, session) {
+  
+  # The Map
   
   output$ui <- renderUI({
     if (is.null(input$year))
@@ -191,7 +202,8 @@ output$title <- renderUI({
   h4(paste0(names(data_options[which(data_options == input$map_var)]), ", Kostroma Province (", input$year, ")"))
 })    
 
-# Tab for source info 
+
+# The Sources
 
 output$sources <- renderUI({
   HTML(paste(br(),
@@ -233,4 +245,3 @@ output$sources <- renderUI({
 # Run the application 
 
 shinyApp(ui = ui, server = server)
-

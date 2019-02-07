@@ -27,6 +27,7 @@ ui <- fluidPage(fluidPage(theme = shinytheme("flatly")),
                  
  sidebarLayout(
    sidebarPanel(
+       img(src ="logo.png",height=72,width=72),
      radioButtons("radio", 
                   label = "View data as",
                   choices = list("percent" = 1, "raw" = 2), 
