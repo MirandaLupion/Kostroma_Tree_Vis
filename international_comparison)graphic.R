@@ -26,7 +26,7 @@ ggplot(int_data, aes(x = jurisdiction, y = forest_cover, color = jurisdiction)) 
                           "orange", "blue"), 
              size=ifelse(int_data$jurisdiction %in% c("Kostroma Province","Average for European Russia"), 
                          2, 1.5)) +
-    labs(title="Forest Cover Across Space, 1910", 
+    labs(title="Comparative Forest Cover, 1910", 
        caption="Data source",
        x = NULL,
        y = "Forest cover") +

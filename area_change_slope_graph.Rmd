@@ -107,13 +107,15 @@ ggplot(slope_data) +
   
   theme(legend.position="none") +
   
+  scale_y_continuous(labels = function(x) paste0(x, "%")) +
+  
   # Remove the x-axis label
   
   xlab("") + 
   
   # Add a y-axis label
   
-  ylab("Percent forested land") + 
+  ylab("Forested land") + 
   
   labs(title = "Change in forestation, Kostroma Province") +
   
@@ -170,6 +172,10 @@ ggplot(slope_data) +
                                  "red"="#ff250d", 
                                  "dark red" = "#c91400", 
                                  "light red" = "#ff8989")) 
+# 
+# +
+#   
+#    scale_y_continuous(labels = function(x) paste0(x, "%"))
 
 
 
