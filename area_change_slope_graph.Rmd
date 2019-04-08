@@ -86,7 +86,7 @@ ggplot(slope_data) +
   
   geom_vline(xintercept=90, linetype="dashed", size=.1) +
   
-  # Remove the panel background
+   # Remove the panel background
   
   theme(panel.background = element_blank()) +
   
@@ -103,11 +103,12 @@ ggplot(slope_data) +
   theme(axis.text.x=element_blank()) +
   theme(panel.border=element_blank()) + 
   
+  theme(axis.line = element_blank()) +
+  
   # Remove the legend
   
   theme(legend.position="none") +
   
-  scale_y_continuous(labels = function(x) paste0(x, "%")) +
   
   # Remove the x-axis label
   
@@ -115,7 +116,15 @@ ggplot(slope_data) +
   
   # Add a y-axis label
   
-  ylab("Forested land") + 
+  ylab("Forestation") + 
+
+  # Remove the x-axis label
+  
+  xlab("") + 
+  
+  # Add a y-axis label
+  
+  ylab("Percent forestation") + 
   
   labs(title = "Change in forestation, Kostroma Province") +
   
@@ -172,11 +181,6 @@ ggplot(slope_data) +
                                  "red"="#ff250d", 
                                  "dark red" = "#c91400", 
                                  "light red" = "#ff8989")) 
-# 
-# +
-#   
-#    scale_y_continuous(labels = function(x) paste0(x, "%"))
-
 
 
 ```

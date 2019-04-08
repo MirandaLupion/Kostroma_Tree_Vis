@@ -1,1 +1,14 @@
-district,total_area_desyatin,suitable_area_desyatin,forested_area_desyatin,percent_forested_total,percent_forested_suitableKologrivsky District,1179268,1155679,952408,81,82.4Vetluzhsky District ,1352052,1310806,1058339,78.3,80.7Varnavinsky District,934999,899302,664622,71.1,73.9Makaryevsky District,1088850,1052890,702556,64.6,66.7Soligalichsky District,413269,399214,272384,65.9,68Chukhlomsky District,335178,321297,200702,59.9,62.4Galichsky District,420171,405652,216904,51.6,53.5Buysky District,284273,277833,142964,50.3,55.1Kineshmasky District,452027,436469,240156,53.1,55Kostromsky District,425124,406863,168498,39.6,41.4Yurevetsky District,295088,285328,105482,35.8,37Nerekhtsky District,350158,338967,92219,26.3,27.1All,7527457,7290298,4817234,64,66.1
+﻿district,total_area_desyatin,suitable_area_desyatin,forested_area_desyatin,percent_forested_total,percent_forested_suitable
+Kologrivsky District,1179268,1155679,952408,81,82.4
+Vetluzhsky District ,1352052,1310806,1058339,78.3,80.7
+Varnavinsky District,934999,899302,664622,71.1,73.9
+Makaryevsky District,1088850,1052890,702556,64.6,66.7
+Soligalichsky District,413269,399214,272384,65.9,68
+Chukhlomsky District,335178,321297,200702,59.9,62.4
+Galichsky District,420171,405652,216904,51.6,53.5
+Buysky District,284273,277833,142964,50.3,55.1
+Kineshemsky District,452027,436469,240156,53.1,55
+Kostromskoy District,425124,406863,168498,39.6,41.4
+Yurevetsky District,295088,285328,105482,35.8,37
+Nerekhtsky District,350158,338967,92219,26.3,27.1
+All,7527457,7290298,4817234,64,66.1

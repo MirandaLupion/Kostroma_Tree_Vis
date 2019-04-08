@@ -1,4 +1,4 @@
-district,year,forested_area,total_area,percent_forested,forested_area_change,forested_area_percent_change
+﻿district,year,forested_area,total_area,percent_forested,forested_area_change,forested_area_percent_change
 Kologrivsky District,1818,963335,1121990,85.5,NA,NA
 Vetluzhsky District ,1818,1172113,1325657,88.4,NA,NA
 Varnavinsky District,1818,797886,911469,87.5,NA,NA
@@ -7,8 +7,8 @@ Soligalichsky District,1818,270703,389527,69.5,NA,NA
 Chukhlomsky District,1818,195536,329251,59.4,NA,NA
 Galichsky District,1818,237910,420883,56.5,NA,NA
 Buysky District,1818,205158,277944,73.8,NA,NA
-Kineshmasky District,1818,229856,44924,51.6,NA,NA
-Kostromsky District,1818,210484,419066,50.2,NA,NA
+Kineshemsky District,1818,229856,44924,51.6,NA,NA
+Kostromskoy District,1818,210484,419066,50.2,NA,NA
 Yurevetsky District,1818,107937,302019,35.7,NA,NA
 Nerekhtsky District,1818,101319,348881,29,NA,NA
 All,1818,5344970,7358327,72.6,NA,NA
@@ -20,8 +20,8 @@ Soligalichsky District,1908,252848,384418,65.8,-17855,-6.6
 Chukhlomsky District,1908,200702,335178,59.9,5166,2.6
 Galichsky District,1908,216904,420171,51.6,-21006,-8.8
 Buysky District,1908,142964,284273,50.3,-62194,-30.3
-Kineshmasky District,1908,240516,452027,53.1,10300,4.5
-Kostromsky District,1908,168498,425124,39.6,-41986,-19.9
+Kineshemsky District,1908,240516,452027,53.1,10300,4.5
+Kostromskoy District,1908,168498,425124,39.6,-41986,-19.9
 Yurevetsky District,1908,105482,295088,35.8,-2455,-2.3
 Nerekhtsky District,1908,105482,295088,35.8,-2455,-2.3
 All,1908,606355,1522397,39.8,-43241,-6.7
